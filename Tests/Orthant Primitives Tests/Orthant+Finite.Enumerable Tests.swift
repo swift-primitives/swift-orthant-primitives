@@ -1,9 +1,8 @@
 // Orthant+Finite.Enumerable Tests.swift
 
+import Orthant_Primitives
 import Orthant_Primitives_Test_Support
 import Testing
-
-import Orthant_Primitives
 
 // MARK: - Orthant+Finite.Enumerable - Enumerable
 

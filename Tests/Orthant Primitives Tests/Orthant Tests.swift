@@ -1,8 +1,7 @@
 // Orthant Tests.swift
 
-import Testing
-
 import Orthant_Primitives
+import Testing
 
 // MARK: - Orthant - Construction
 
@@ -55,7 +54,8 @@ struct `Orthant - Conformances` {
         #expect(Orthant<2>(repeating: .positive) != Orthant<2>(repeating: .negative))
         #expect(
             Orthant<2> { $0 == 0 ? .positive : .negative }
-                != Orthant<2> { $0 == 0 ? .negative : .positive })
+                != Orthant<2> { $0 == 0 ? .negative : .positive }
+        )
     }
 
     @Test
@@ -77,9 +77,9 @@ struct `Orthant - Conformances` {
 struct `Orthant - Comparison` {
     @Test
     func `lexicographic order, axis 0 most significant`() {
-        let mm = Orthant<2>(repeating: .negative)                     // (−, −)
-        let mp = Orthant<2> { $0 == 0 ? .negative : .positive }       // (−, +)
-        let pm = Orthant<2> { $0 == 0 ? .positive : .negative }       // (+, −)
+        let mm = Orthant<2>(repeating: .negative)  // (−, −)
+        let mp = Orthant<2> { $0 == 0 ? .negative : .positive }  // (−, +)
+        let pm = Orthant<2> { $0 == 0 ? .positive : .negative }  // (+, −)
         #expect(mm < mp)
         #expect(mp < pm)
         #expect(mm < pm)

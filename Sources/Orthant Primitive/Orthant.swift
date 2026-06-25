@@ -68,12 +68,14 @@ extension Orthant {
 // their `Direction`s lexicographically — axis 0 is most significant.
 
 extension Orthant {
+    /// Reports whether two orthants choose the same direction on every axis.
     @inlinable
     public static func == (lhs: Orthant, rhs: Orthant) -> Bool {
         for index in 0..<N where lhs.directions[index] != rhs.directions[index] { return false }
         return true
     }
 
+    /// Orders two orthants lexicographically by their per-axis directions, axis 0 most significant.
     @inlinable
     public static func < (lhs: Orthant, rhs: Orthant) -> Bool {
         for index in 0..<N where lhs.directions[index] != rhs.directions[index] {
@@ -82,15 +84,19 @@ extension Orthant {
         return false
     }
 
+    /// Reports whether `lhs` orders at or before `rhs` lexicographically.
     @inlinable
     public static func <= (lhs: Orthant, rhs: Orthant) -> Bool { !(rhs < lhs) }
 
+    /// Reports whether `lhs` orders strictly after `rhs` lexicographically.
     @inlinable
     public static func > (lhs: Orthant, rhs: Orthant) -> Bool { rhs < lhs }
 
+    /// Reports whether `lhs` orders at or after `rhs` lexicographically.
     @inlinable
     public static func >= (lhs: Orthant, rhs: Orthant) -> Bool { !(lhs < rhs) }
 
+    /// Feeds each axis direction's sign into the hasher, axis 0 first.
     @inlinable
     public func hash(into hasher: inout Hasher) {
         for index in 0..<N { hasher.combine(directions[index].sign) }
@@ -99,14 +105,22 @@ extension Orthant {
 
 // MARK: - Codable
 
+// The `Codable` conformance below realizes the stdlib `Decodable`/`Encodable`
+// requirements, whose signatures mandate existential coder parameters and untyped
+// `throws`. Neither can be narrowed at the conformance site, so the two rules are
+// disabled for this block only. The conformance is excluded from Embedded Swift,
+// which does not ship the `Codable` runtime infrastructure.
+// swiftlint:disable no_any_protocol_existential typed_throws_required
 #if !hasFeature(Embedded)
     extension Orthant: Codable {
+        /// Decodes an orthant from an unkeyed sequence of `N` per-axis directions.
         @inlinable
         public init(from decoder: any Decoder) throws {
             var container = try decoder.unkeyedContainer()
             self.init(try InlineArray<N, Direction> { _ in try container.decode(Direction.self) })
         }
 
+        /// Encodes the orthant as an unkeyed sequence of its `N` per-axis directions.
         @inlinable
         public func encode(to encoder: any Encoder) throws {
             var container = encoder.unkeyedContainer()
@@ -114,3 +128,4 @@ extension Orthant {
         }
     }
 #endif
+// swiftlint:enable no_any_protocol_existential typed_throws_required

@@ -27,8 +27,10 @@ extension Orthant: Finite.Enumerable {
     @inlinable
     public init(_unchecked: Void, ordinal: Ordinal) {
         let bits = ordinal.rawValue
-        self.init(InlineArray<N, Direction> { index in
-            (bits & (UInt(1) << UInt(index))) != 0 ? .negative : .positive
-        })
+        self.init(
+            InlineArray<N, Direction> { index in
+                (bits & (UInt(1) << UInt(index))) != 0 ? .negative : .positive
+            }
+        )
     }
 }
